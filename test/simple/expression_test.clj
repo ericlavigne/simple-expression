@@ -18,3 +18,8 @@
        "z" '(get {"w" "x", "y" "z"} "y") 
        ))
 
+(deftest environment-extension-test
+  (is "z"
+      (.evalExpr (new simple.expression {"letterMap" {"w" "x", "y" "z"}})
+		 '(get letterMap "y"))))
+

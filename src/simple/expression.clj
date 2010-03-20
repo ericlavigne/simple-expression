@@ -2,6 +2,7 @@
   (:gen-class
    :state state
    :init init
+   :constructors {[Object] []}
    :methods [#^{:static true} [parseExpr [String] Object]
 	     #^{:static true} [parseFn [Iterable String] Object]
 	     [evalFn [Object Iterable] Object]
