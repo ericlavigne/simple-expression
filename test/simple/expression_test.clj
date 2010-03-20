@@ -15,5 +15,6 @@
        false '(and true true false)
        false '(or false false)
        true '(or false true false)
+       "z" '(get {"w" "x", "y" "z"} "y") 
        ))
 

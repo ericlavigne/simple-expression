@@ -38,7 +38,9 @@
 
 	"all" and-fn, "and" and-fn, 
 	"or" or-fn, "some" or-fn, "any" or-fn
-	"not" none, "none" none
+	"not" none, "none" none,
+
+	"get" get
 	}))
 
 (defn -parseExpr [expr-string]
@@ -52,7 +54,12 @@
 
 (defn evaluate 
   ([environment expr] (binding [*environment* environment] (evaluate expr)))
-  ([expr] (cond (symbol? expr) (recur (get *environment* (str expr)))
+  ([expr] (cond (symbol? expr) (let [val (get *environment* (str expr))]
+				 (if (nil? val)
+				   (throw (new RuntimeException
+					       (str "Unrecognized symbol: "
+						    expr)))
+				   (recur val)))
 		(vector? expr) (vec (map evaluate expr))
 		(seq? expr) (apply (evaluate (first expr))
 				   (map evaluate (rest expr)))
