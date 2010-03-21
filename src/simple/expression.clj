@@ -7,7 +7,7 @@
 	     #^{:static true} [parseFn [Iterable String] Object]
 	     [evalFn [Object Iterable] Object]
 	     [evalExpr [Object] Object]
-	     ;[evalExprAsBool [Object] boolean]
+	     [evalExprAsBool [Object] boolean]
 	     ;[evalExprAsInt [Object] int]
 	     ;[evalExprAsStr [Object] String]
 	     ]))
@@ -60,7 +60,7 @@
 				   (throw (new RuntimeException
 					       (str "Unrecognized symbol: "
 						    expr)))
-				   (recur val)))
+				   (evaluate val)))
 		(vector? expr) (vec (map evaluate expr))
 		(seq? expr) (apply (evaluate (first expr))
 				   (map evaluate (rest expr)))
@@ -70,6 +70,13 @@
   (evaluate (merge *base-env* 
 		   (.state this))
 	    expr))
+
+(defn -evalExprAsBool [this expr]
+  (let [res (-evalExpr this expr)]
+    (not (or (= res false)
+	     (nil? res)
+	     (= res [])
+	     (= res 0)))))
 
 ; TODO: This should perform arg replacement and then call evalExpr
 (defn -evalFn [this function args]

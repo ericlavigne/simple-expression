@@ -23,3 +23,15 @@
       (.evalExpr (new simple.expression {"letterMap" {"w" "x", "y" "z"}})
 		 '(get letterMap "y"))))
 
+(deftest eval-as-bool-test
+  (are [res expr] (= res 
+		     (.evalExprAsBool (new simple.expression {})
+				      expr))
+       true '(> 3 2)
+       false '(< 3 2)
+       true '(+ 1 1)
+       false '(- 1 1)
+       false []
+       true [1]
+       false nil
+       false false))
